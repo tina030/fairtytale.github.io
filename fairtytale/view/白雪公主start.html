@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+        crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous">
+        </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
+    <link href="/public/style.css" rel="stylesheet" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js"></script>
+    <title></title>
+</head>
+
+<body style="background-image: url('/public/images/bg_2.jpg');  background-size: cover;">
+
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #2a1e2e;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="首頁.html">
+                <img src="/public/images/logo1.png" style="height: 30pt;">
+            </a>
+            <div class="d-flex">
+                <div class="collapse navbar-collapse me-2" id="navbarNavDarkDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                故事選擇
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" href="白雪公主主頁.html">白雪公主</a></li>
+                                <li><a class="dropdown-item" href="灰姑娘主頁.html">灰姑娘</a></li>
+                                <li><a class="dropdown-item" href="小紅帽主頁.html">小紅帽</a></li>
+                                <li><a class="dropdown-item" href="青蛙王子主頁.html">青蛙王子</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <a class="navbar-brand" href="player.html">
+                    <img src="/public/images/user.png" style="height: 30pt;">
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="storyContainer">
+        <div id="storyText"></div>
+        <div id="choicesContainer"></div>
+        <button id="continueButton" onclick="continueStory()">繼續</button>
+    </div>
+
+    <script>
+        // 故事劇情資料
+        var storyData = [
+            {
+                id: "p1",
+                text: "<h3>前情提要:</h3><h5>嚴冬時節，鵝毛一樣的雪片在天空中到處飛舞著，有一個王后坐在王宮裡的一扇窗子邊，正在為她的女兒做針線活兒，寒風捲著雪片飄進了窗子，烏木窗臺上飄落了不少雪花。<br>她抬頭向窗外望去，一不留神，針刺進了她的手指，紅紅的鮮血從針口流了出來，有三點血滴落在飄進窗子的雪花上。她若有所思地凝視著點綴在白雪上的鮮紅血滴，又看了看烏木窗臺，說道：「但願我小女兒的皮膚長得白裡透紅，看起來就像這潔白的雪和鮮紅的血一樣，那麼艷麗，那麼驕嫩，頭髮長得就像這窗子的烏木一般又黑又亮！」<br>她的小女兒漸漸長大了，小姑娘長得水靈靈的，真是人見人愛，美麗動人。她的皮膚真的就像雪一樣的白嫩，又透著血一樣的紅潤，頭髮像烏木一樣的黑亮。所以王后給她取了個名字，叫白雪公主。<br>但白雪公主還沒有長大，她的王后媽媽就死去了。<br></h5>",
+                choices: [
+                    { text: "繼續", nextId: "p2" },
+                ],
+            },
+            {
+                id: "p2",
+                text: "<h5>不久，國王爸爸又娶了一個妻子。這個王后長得非常漂亮，但她很驕傲自負，嫉妒心極強，只要聽說有人比她漂亮，她都不能忍受。她有一塊魔鏡，她經常走到鏡子面前自我欣賞，並問道：「魔鏡阿魔鏡，誰是世界上最漂亮的女人?」<br>鏡子回答道：「是你，王后！你就是這兒最漂亮的女人。」<br>聽到這樣的話，她就會滿意地笑起來。但白雪公主慢慢地長大，並出落得越來越標致漂亮了。到了七歲時，她長得比明媚的春光還要艷麗奪目，比王后更美麗動人。直到有一天，王后像往常一樣地去問那面魔鏡時，鏡子作出了這樣的回答：<br>「王后，你是美麗漂亮的，但是白雪公主要比你更加漂亮！」</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p3" },
+                ],
+            },
+            {
+                id: "p3",
+                text: "<h5>她聽到了這話，心裡充滿了憤怒和妒忌，臉也變得蒼白起來。她叫來了一名僕人對他說：「給我把白雪公主抓到大森林裡去，我再也不希望看到她了。」<br>僕人把白雪公主帶走了。在森林裡他正要動手殺死她時，她哭泣著哀求他不要殺害她。面對楚楚動人的可憐小公主的哀求，僕人的同情之心油然而生，他說道：「你是一個人見人愛的孩子，我不會殺害你。」<br>於是，他把她單獨留在了森林裡。當僕人決定不再殺害白雪公主，而把她留在那兒時，儘管他知道在那荒無人際的大森林裡，她十有八九會被野獸撕成碎片，但想到他不必親手殺害她，他就覺得壓在心上的一塊沉重的大石頭落了下來。</h5><h3>現在，你將扮演白雪公主，做出選擇，掌握自己的命運吧。</h3>",
+                choices: [
+                    { text: "繼續", nextId: "p4" },
+                ],
+            },
+            {
+                id: "p4",
+                text: "<h5>僕人走了以後，妳一個人非常害怕，在森林裡到處徘徊，尋找出去的路。野獸在身旁吼叫，但卻沒有一個去傷害妳。天色漸漸變暗，妳想著必須找個地方度過今晚，這時妳注意到左邊的路有微微的亮光，妳上前走去，發現了分叉路口<br><h3>妳選擇:</h3></h5>",
+                choices: [
+                    { text: "左邊雜草叢生的小路", nextId: "choice1_1" },
+                    { text: "右邊較為寬敞的路", nextId: "choice1_2" },
+                ],
+            },
+            {
+                id: "choice1_1",
+                text: "<h5>這條路看起來已經很久沒有人走過了，妳鼓起勇氣向前走去，因為樹木恣意生長，擋住了月光，經過的路越來越暗，突然，妳被地上凸起的樹根絆倒了，白皙的膝蓋上增添了傷痕。這條路上什麼也沒有，妳跛著腳走回分岔路口，走向了另一條路線。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p5" },
+                ],
+            },
+            {
+                id: "choice1_2",
+                text: "<h5>這條路既寬敞又壯觀，道路旁長滿稀奇古怪的果實，樹木又高又筆直，妳邊走邊欣賞風景，微風吹過妳的秀髮感覺特別舒服，妳心想，沐浴在月光下的冒險似乎也沒那麼糟糕了。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p5" },
+                ],
+            },
+            {
+                id: "p5",
+                text: "<h5>妳走了一段時間，來到了一間小房子前。妳猶豫不決的徘徊在門口，試著叫喚幾聲也沒有人回應，妳又害怕又疲憊，只好推門走進去想休息一下。一進門，發現房子裡的一切都佈置得井井有條，十分整潔乾淨。一張桌子上舖著白布，上面擺放著七個小盤子，每個盤子裡都裝有一塊麵包和其它一些吃的東西，盤子旁邊依次放著七個裝滿葡萄酒的玻璃杯，七把刀子和叉子等，靠牆則並排放著七張小床。<br>此時妳感到又餓又渴，也顧不得這是誰的了，走上前去從每塊麵包上切了一小塊吃了，又把每支玻璃杯裡的酒喝了一點點。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p6" },
+                ],
+            },
+            {
+                id: "p6",
+                text: "<h5>吃過喝過之後，妳覺得非常疲倦，想躺下休息休息，於是來到那些床前，七張床的每一張妳幾乎都試過了，不是這一張太長，就是那一張太短，直到試了第七張床才合適。妳在上面躺下來，很快就睡著了。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p7" },
+                ],
+            },
+            {
+                id: "p7",
+                text: "<h5>不久，房子的主人們回來了，他們是七個在山裡開礦採金子的小矮人。他們點亮七盞燈，馬上發現有人動過房子裡的東西。第一個問：「誰坐過我的凳子？」第二個問：「誰吃過我盤子裡的東西？」第三個問：「誰吃過我的麵包？」<br>第四個問：「誰動了我的調羹？」第五個問：「誰用過我的叉子？」第六個問：「誰用過我的小刀？」第七個問：「誰喝過我的葡萄酒？」<br>第一個接著向四周瞧，走到床前，叫道：「是誰在我的床上睡過？」其餘的一聽都跑過來，緊跟著他們也都叫了起來，因為他們都看得出有人在他們的床上躺過。<br>第七個矮人一看他的床上正睡著的白雪公主，立刻把他的兄弟們都叫了過來，他們拿來燈，仔細照著白雪公主看了好一陣子，驚奇地感歎道：「我的天哪，她是一個多麼可愛的孩子呀！」他們欣喜而又愛憐地看著她，生怕將她吵醒了。晚上，第七個小矮人輪著和其他的幾個小矮人每人睡一個小時，度過了這個夜晚。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p8" },
+                ],
+            },
+            {
+                id: "p8",
+                text: "<h5>第二天早上，妳醒來後見有七個小矮人圍著，嚇了一大跳，但他們非常和氣地問妳說：「你叫什麼名字？」<br>看著他們那善良樸實的面孔和熱情的目光，妳回答說：「我叫白雪公主。」小矮人們又問：「妳是怎樣到我們家裡來的？」<br>於是，妳向他們講述了自己的全部經歷。他們聽了非常同情，說道：「如果妳願意為我們收拾房子、做飯、洗衣服、紡線、縫補衣裳，妳可以留在這兒，我們會盡心照料妳的。」<br><h3>妳選擇:</h3></h5>",
+                choices: [
+                    { text: "留下和小矮人住 ", nextId: "choice2_1" },
+                    { text: "對他們表達感謝並離開", nextId: "choice2_2" },
+                ],
+            },
+            {
+                id: "choice2_1",
+                text: "<h5>妳很樂意地說：「好的，我非常願意。」<br>於是，七個小矮人每天到山裡尋找金子和銀子，妳則待在家裡做些家務活。他們告誡妳說：「王后不久就會找出妳在哪兒的，千萬不要讓任何人進屋來。」</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p9" },
+                ],
+            },
+            {
+                id: "p9",
+                text: "<h5>那個僕人回來覆命後，王后以為白雪公主已經死了，這下，她一定是全國最漂亮的女人了，她走到魔鏡面前說：<br>「魔鏡阿魔鏡，誰是世界上最漂亮的女人?」<br>鏡子回答說：<br>「是你，王后！你是這塊地方最漂亮的女人，但是在山的那一邊，在那綠色的樹蔭下，有七個小矮人建造的小房屋，白雪公主就躲藏在那裡，哎呀，王后！她比你更漂亮。」<br><br>王后聽了大吃一驚，因為她知道這面鏡子是從不說假話的，一定是那僕人蒙騙了她，她決不能容忍有任何比她更漂亮的人活在這個世上。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p10" },
+                ],
+            },
+            {
+                id: "p10",
+                text: "<h5>所以，她把自己裝扮成一個賣雜貨的老婆婆，翻山越嶺來到了那七個小矮人的住處。她敲著門喊道：「賣雜貨，多好的雜貨呀！」妳從窗戶往外看去，說道：「老人家，你好！你賣的是什麼啊？」她回答道：「好東西，好漂亮的東西，有各種顏色的帶子和線筒。<br><br><h3>妳想:</h3></h5>",
+                choices: [
+                    { text: "這老婆婆，好像並不是那種壞人，就讓她進來吧。", nextId: "choice2_1_1" },
+                    { text: "這老婆婆，看臉就不友善，還是別讓她進來了。", nextId: "choice2_1_2" },
+                ],
+            },
+            {
+                id: "choice2_1_1",
+                text: "<h5>妳跑過去打開門。老婆婆進來後說道：「哎呀！看你的胸帶多差呀，來吧，讓我給妳繫上一根漂亮的新帶子。」妳做夢也沒想到這會有危險，所以走上前去站在了老婆婆的面前。老婆婆很熟練地將帶子繫在胸前，突然，她猛地用力將帶子拉緊，妳便被勒得透不過氣來，很快失去知覺倒在了地上，就像死去了一樣。看到妳的樣子，惡毒的王后說道：「這下你的美麗該結束了吧！」說完放心地走了。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p11" },
+                ],
+            },
+            {
+                id: "p11",
+                text: "<h5>晚上，七個小矮人回來了，當他們看到妳躺在地上一動不動，就像死了一樣時，他們的心馬上縮緊了，急忙上前將妳抬了起來，他們馬上剪斷了帶子。<br>過了一會兒，妳慢慢地開始呼吸了，妳又活了過來。聽妳講完事情的經過後，他們說道：「那個老婆婆就是王后，下次妳要當心，在我們離開後，千萬不要讓任何人進來。」<br><br>王后一回到家裡，就迫不急待地徑直走到魔鏡面前，像往常一樣對著鏡子說話。但令她吃驚的是鏡子的回答仍然是這樣的：<br>「是你，王后！你是這塊地方最漂亮的女人，但是在山的那一邊，在那綠色的樹蔭下，有七個小矮人建造的小房屋，白雪公主就躲藏在那裡，哎呀，王后！她比你更漂亮。」</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p12" },
+                ],
+            },
+            {
+                id: "choice2_1_2",
+                text: "<h5>妳覺得防人之心不可無，便躲進了小矮人的床底下等待老婆婆離開。老婆婆見妳遲遲不出來，又無法破門而入，只能氣急敗壞地離開了，妳幸運的躲過了一劫。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p12" },
+                ],
+            },
+            {
+                id: "p12",
+                text: "<h5>知道妳仍然活著，惱怒與怨恨使王后渾身發抖，她不甘心也不能忍受，於是又對自己進行打扮，這次的偽裝儘管還是一個老婆婆，但卻完全不同於上次。<br>偽裝好後，她帶上一把有毒的梳子，翻山越嶺來到了七個小矮人的房門前，敲著門喊道：「買不買東西喲！」妳在裡面聽到了，把門開一條縫說道：「我可不敢讓別人進來了。」王后連忙說道：「妳只要看看我這把漂亮的梳子就行了。」說完把那把有毒的梳子遞了進去。<br>梳子看起來的確很漂亮，妳拿過梳子，想在頭上試著梳一梳，但就在梳子剛碰到妳的頭時，梳子上的毒力發作了，妳倒在地上，失去了知覺。王后冷笑著說道：「妳早該這樣躺著了。」說完就走了。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p13" },
+                ],
+            },
+            {
+                id: "p13",
+                text: "<h5>幸運的是這天晚上，小矮人們回來得很早，當他們看見妳躺在地上時，知道一定又發生了不幸的事情，急忙將妳抱起來查看，很快就發現了那把有毒的梳子。<br>他們將它拔了出來，不久，妳恢復了知覺，醒了過來。接著，妳把事情發生的經過告訴了他們，七個小矮人再次告誡妳，任何人來了都不要再開門。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p14" },
+                ],
+            },
+            {
+                id: "p14",
+                text: "<h5>此刻，王后已回到王宮，站在了魔鏡前問著鏡子，但聽到的竟還是和上次相同的回答。這下，她氣得渾身都哆嗦起來了，她無法忍受這樣的回答，狂叫道：「白雪公主一定要死，即使以我的生命為代價也在所不惜！」<br>她悄悄地走進一間偏僻的房子裡，精心制做了一顆毒蘋果。這蘋果的外面看起來紅紅的，非常誘人，但只要吃一點就會要人的命。接著，她將自己裝扮成一個農婦，翻山越嶺又來到了小矮人的房舍，伸手敲了敲門。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p15" },
+                ],
+            },
+            {
+                id: "p15",
+                text: "<h5>妳把頭從窗戶裡探出來說道：「我不敢讓人進來，因為小矮人們告誡我，任何人來了都不要開門。」<br>「就隨妳吧。」 老農婦拿出那個毒蘋果說道， 「可是這蘋果實在是太漂亮可愛了，我就作一個禮物送給妳吧。」<br>白雪公主說道：「不，我可不敢要。」老農婦急了：「妳這傻孩子，擔心什麼？難道這蘋果有毒嗎？來！妳吃一半，我吃一半。」說完就將蘋果分成了兩半。<br><br><h3>這時，妳選擇:</h3></h5>",
+                choices: [
+                    { text: "將蘋果榨成果汁", nextId: "choice3_1" },
+                    { text: "接受她的好意將蘋果吃下去", nextId: "choice3_2" },
+                ],
+            },
+            {
+                id: "choice3_1",
+                text: "<h5>妳靈光一閃，搶過老農婦手中的蘋果，說道: 「您年紀大了蘋果不好咬，榨成果汁我們一起喝吧。」說完馬上就丟進榨汁機裡，沒有多久新鮮的蘋果馬上就變成了兩杯蘋果汁。<br>老農婦面有難色地盯著蘋果汁，這下整杯蘋果汁都有毒了，她慌慌張張的編了理由離開，妳又成功地躲過了她的計謀。<br><br>王后暫時想不到辦法來害妳了，妳過了一段平靜又悠閒的日子，某天妳在森林裡走走時，看到一個英俊的王子正在湖邊散步。他被妳的美麗吸引，向妳走來。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "d_2" },
+                ],
+            },
+            {
+                id: "choice3_2",
+                text: "<h5>其實，王后在做毒蘋果時，只在蘋果的一邊下了毒，另一邊卻是好的。妳看了看那蘋果，很想嘗一嘗，因為那蘋果看起來很甜美。妳看見那農婦吃了那一半，就再也忍不住了，接過另一半蘋果咬了一口。<br>蘋果剛一進口，妳就倒在地上死去了。王后一見，臉上露出了快意的獰笑，說道：「這次再沒有人能救妳的命了！」她回到王宮，來到魔鏡前，問道：<br>「魔鏡阿魔鏡，誰是世界上最漂亮的女人? 」<br>鏡子回答道：<br>「是你，王后！你就是全國最漂亮的女人。」<br>聽到這句話，王后的嫉妒心才安定下來，感到十分愉快和幸福。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p16" },
+                ],
+            },
+            {
+                id: "p16",
+                text: "<h5>夜幕降臨時，小矮人都回到了家裡，他們發現白雪公主躺在地上，嘴裡沒有了呼吸。他們不相信妳真的死了，將妳抱了起來，給妳梳頭髮，用酒和水為妳洗臉，但一切都是徒勞的，因為小姑娘看來真的死了。<br>他們極為傷心地將妳放在棺木上，七個小矮人坐在旁邊守著。他們悲痛欲絕，整整守了三天三夜。最後他們絕望了，準備將妳入土掩埋，但看到白雪公主的臉色紅潤依舊，栩栩如生，他們說：「我們不能把她埋在陰冷黑暗的地下。」<br><br>所以，他們做了一口從外面也能看見的玻璃棺材把妳放了進去，棺材上用金子嵌著白雪公主的名字及銘文。小矮人們將棺材安放在一座小山上面，由一個小矮人永遠坐在旁邊看守。<br>天空中飛來不少鳥兒，首先是一隻貓頭鷹，接著是一隻渡鴉，最後飛來的是一隻鴿子，它們都來為白雪公主的死而痛哭。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p17" },
+                ],
+            },
+            {
+                id: "p17",
+                text: "<h5>妳就這樣一直被安放在小山上，過了很久很久，妳的樣子看起來仍然像是在那兒安睡，皮膚仍然如雪一樣的白嫩，臉色仍然透著血一般的紅潤，頭髮仍然如烏木一樣又黑又亮。<br>直到有一天，一個王子來到了小矮人的房子前，拜訪了七個小矮人。在小山上，他看到了白雪公主及棺材上的銘文，心裡非常激動，一刻也不能平靜。<br>他對小矮人說要付給他們金錢，求他們讓他把白雪公主和棺材帶走。但小矮人說：「就是用世界上所有的金子來換，我們也不會同意讓她離我們而去的。」王子不停地懇求，甚至苦苦哀求。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p18" },
+                ],
+            },
+            {
+                id: "p18",
+                text: "<h5>看到他如此真心誠意，他們終於被他的虔誠所感動，同意讓他把棺材帶走。但就在他叫人把棺材抬起準備回家時，棺材被撞了一下，那塊毒蘋果突然從嘴裡吐了出來，白雪公主馬上醒了：「我這是在哪兒呀？」王子驚喜地說：「妳醒了。」<br>接著，把發生的一切都告訴了她，最後說道：「我愛妳勝過愛世界上的一切，走吧！與我到我父親的王宮去，我將娶妳做我的妻子。」妳同意了，並與王子一同回了家。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "c" },
+                ],
+            },
+            {
+                id: "choice2_2",
+                text: "<h5>妳心想，不能隨便給別人添麻煩，他們已經讓妳休息了一晚了，於是妳便對他們說: 「謝謝你們的邀請和昨晚的救命之恩，但是我不能留下來給你們添麻煩，真的很謝謝你們，我要告辭了。」<br>小矮人們雖然不捨，但也不強迫妳，於是送妳一袋麵包和一塊銀子，並告訴妳前往鄰國最近的路線。與他們分別後，妳便準備前往鄰國。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p19" },
+                ],
+            },
+            {
+                id: "p19",
+                text: "<h5>雖然小矮人們有告訴妳前往鄰國的路，但妳走著走著還是漸漸迷失了方向，妳在森林漫無目的地行走。<br>突然，妳遇到了一隻鹿，它的大眼睛水靈靈地盯著妳，親暱的用鼻尖輕輕地碰了碰妳的小腿，似乎是想帶妳去哪，妳跟隨著它的引導，一路穿過茂密的樹林和溪流，一直走到一個寧靜的清泉旁。<br>在那裡，妳看到一個英俊的王子正在這裡散步。他被妳的美麗吸引，向妳走來。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "d_1" },
+                ],
+            },
+            {
+                id: "d_1",
+                text: "<h5>妳與王子聊天，發現他是一位善良而溫柔的人。妳們互相分享故事，漸漸建立起了深厚的情感。王子邀請妳一同返回他的王國，並成為他的王后。<br><br><h3>妳選擇:</h3></h5>",
+                choices: [
+                    { text: "答應他的邀請", nextId: "choice2_2_1" },
+                    { text: "回絕他", nextId: "choice2_2_2" },
+                ],
+            },
+            {
+                id: "d_2",
+                text: "<h5>妳與王子聊天，發現他是一位善良而溫柔的人。妳們互相分享故事，漸漸建立起了深厚的情感。王子邀請妳一同返回他的王國，並成為他的王后。<br><br><h3>妳選擇:</h3></h5>",
+                choices: [
+                    { text: "答應他的邀請", nextId: "choice2_2_1" },
+                    { text: "回絕他", nextId: "choice2_2_3" },
+                ],
+            },
+            {
+                id: "choice2_2_1",
+                text: "<h5>妳心動了，決定跟隨王子回到他的王國。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "c" },
+                ],
+            },
+            {
+                id: "c",
+                text: "<h5>你們舉行了盛大的婚禮，在你們邀請的客人當中，其中就有妳的繼母王后，她將自己打扮得富貴典雅，對著魔鏡說道：<br>「魔鏡阿魔鏡，誰是世界上最漂亮的女人? 」<br>鏡子回答說：<br>「是你，我想這兒是你最漂亮，但是王子的新娘比你漂亮得多。」<br>聽到這些話，她又勃然大怒起來，但又無可奈何。嫉妒心與好奇心使她決定去看看這位新娘。當她到達舉行婚禮的地方，才知道這新娘不是別人，正是她認為已經死去很久的白雪公主。<br>看到妳，她氣得昏了過去，自此便一病不起，不久就在嫉妒、憤恨與痛苦的自我煎熬中死去了。妳和王子結婚後，美滿的生活充滿了歡樂和幸福，一輩子都快快樂樂地在一起。</h5>",
+                choices: [
+                    { text: "故事結束啦!謝謝觀看!", nextId: "end1" },
+                    // { text: "故事結束啦!謝謝觀看!" },
+                ],
+
+            },
+            {
+                id: "choice2_2_2",
+                text: "<h5>妳雖然有點心動，但更想繼續自由的生活，妳表達了自己的決定，告訴王子妳還需要時間獨自成長和探索。王子雖然感到失望，但他尊重妳的選擇。<br><br>妳告別王子後，獨自前往隔壁的小王國，在那邊遇到了許多好朋友，並認識了善良但平凡的男子，與他結了婚，從此過上幸福快樂的生活。</h5>",
+                choices: [
+                    { text: "故事結束啦!謝謝觀看!", nextId: "end2" },
+                    // { text: "故事結束啦!謝謝觀看!" },
+                ],
+            },
+            {
+                id: "choice2_2_3",
+                text: "<h5>妳雖然有點心動，但是更不想拋下七個小矮人對妳的愛與照顧，於是坦白的告訴了王子，並決定留下來與小矮人們一起生活。<br>王子雖然感到失望，但也尊重妳的意願，並派了士兵在小木屋附近駐守，從此王后再也沒有辦法來打擾妳，妳與七個小矮人從此幸福快樂的生活在一起。</h5>",
+                choices: [
+                    { text: "故事結束啦!謝謝觀看!", nextId: "end3" },
+                    // { text: "故事結束啦!謝謝觀看!" },
+                ],
+            },
+            {
+                id: "end1",
+                text: "<h3 style='text-align:center;'>恭喜收集故事一結局</h3>",
+            },
+            {
+                id: "end2",
+                text: "<h3 style='text-align:center;'>恭喜收集故事二結局</h3>",
+            },
+            {
+                id: "end3",
+                text: "<h3 style='text-align:center;'>恭喜收集故事三結局</h3>",
+            },
+        ];
+
+        let currentStoryIndex = 0; // 目前劇情索引
+
+        function continueStory() {
+            var storyContainer = document.getElementById("storyContainer");
+            var storyText = document.getElementById("storyText");
+            var choicesContainer = document.getElementById("choicesContainer");
+            var continueButton = document.getElementById("continueButton");
+
+            // 隱藏選項容器
+            choicesContainer.style.display = "none";
+
+            // 檢查是否有達到故事結尾
+            // if (currentStoryIndex > storyData.length) {
+            //     storyText.innerHTML = "<h3>故事結束啦!感謝觀看!</h3>";
+            //     continueButton.style.display = "none"; // 隱藏繼續按鈕
+            //     return;
+            // }
+
+            // 取得目前劇情資料
+            var currentStoryData = storyData[currentStoryIndex];
+            storyText.innerHTML = currentStoryData.text;
+
+            // 檢查是否有選項
+            if (currentStoryData.choices.length > 0) {
+                choicesContainer.innerHTML = ""; // 清空選項容器
+
+                // 顯示選項
+                currentStoryData.choices.forEach(function (choice, index) {
+                    var choiceButton = document.createElement("button");
+                    choiceButton.innerHTML = choice.text;
+                    choiceButton.onclick = function () {
+                        makeChoice(index);
+                    };
+                    choicesContainer.appendChild(choiceButton);
+                });
+
+                choicesContainer.style.display = "block"; // 顯示選項容器
+                continueButton.style.display = "none"; // 隱藏繼續按鈕
+            } else {
+                continueButton.style.display = "block"; // 顯示繼續按鈕
+            }
+        }
+
+        function makeChoice(choiceIndex) {
+            var currentStoryData = storyData[currentStoryIndex];
+            var choice = currentStoryData.choices[choiceIndex];
+
+            var text = String(choice.nextId);
+            if (text == 'end1') {
+                console.log('結局一');
+                continueStory();
+                addEndCollect('白雪公主,結局一');
+
+            } else if (text == 'end2') {
+                console.log('結局二');
+                continueStory();
+                addEndCollect('白雪公主,結局二');
+
+            } else if (text == 'end3') {
+                console.log('結局三');
+                continueStory();
+                addEndCollect('白雪公主,結局三');
+
+            }
+
+            // 根據選項的 nextId 更新目前劇情索引
+            currentStoryIndex = storyData.findIndex(function (data) {
+                return data.id === choice.nextId;
+            });
+
+            continueStory(); // 繼續劇情
+
+
+        }
+
+        continueStory(); // 開始劇情
+
+        function addEndCollect(text) {
+            let id = document.cookie.split('=')[0];
+            axios
+                .post("http://127.0.0.1:3000/endcollect", {
+                    帳號: id,
+                    結局收集: text
+                })
+            axios
+                .post("http://127.0.0.1:3000/count", {
+                    帳號: id,
+                    次數: 1
+                })
+        }
+
+
+    </script>
+</body>
+
+
+</html>

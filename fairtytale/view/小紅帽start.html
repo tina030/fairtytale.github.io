@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+        crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous">
+        </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
+    <link href="/public/style.css" rel="stylesheet" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js"></script>
+    <title></title>
+</head>
+
+<body style="background-image: url('/public/images/Horoscope\ Signs\ Illustration.jfif');  background-size: cover;">
+
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #2a1e2e;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="首頁.html">
+                <img src="/public/images/logo1.png" style="height: 30pt;">
+            </a>
+            <div class="d-flex">
+                <div class="collapse navbar-collapse me-2" id="navbarNavDarkDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                故事選擇
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" href="白雪公主主頁.html">白雪公主</a></li>
+                                <li><a class="dropdown-item" href="灰姑娘主頁.html">灰姑娘</a></li>
+                                <li><a class="dropdown-item" href="小紅帽主頁.html">小紅帽</a></li>
+                                <li><a class="dropdown-item" href="青蛙王子主頁.html">青蛙王子</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <a class="navbar-brand" href="player.html">
+                    <img src="/public/images/user.png" style="height: 30pt;">
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="storyContainer">
+        <div id="storyText"></div>
+        <div id="choicesContainer"></div>
+        <button id="continueButton" onclick="continueStory()">繼續</button>
+
+    </div>
+
+    <script>
+        // 故事劇情資料
+        var storyData = [
+            {
+                id: "p1",
+                text: "<h3>前情提要:</h3><h5>從前有個可愛的小姑娘，誰見了都喜歡，但最喜歡她的是她的奶奶，簡直是她要什麼就給她什麼。<br>有一次，奶奶送給小姑娘一頂用絲絨做的小紅帽，戴在她的頭上正好合適。從此，姑娘再也不願意戴任何別的帽子，於是大家便叫她「小紅帽」。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p2" },
+                ],
+            },
+            {
+                id: "p2",
+                text: "<h5>有一天，媽媽對小紅帽說：「來，小紅帽，這裡有一塊蛋糕和一瓶葡萄酒，快給奶奶送去，奶奶生病了，身子很虛弱，吃了這些就會好一些的。趁著現在天還沒有熱，趕緊動身吧。在路上要好好走，不要跑，也不要離開大路，否則你會摔跤的，那樣奶奶就什麼也吃不上了。<br>到奶奶家的時候，別忘了說早上好，也不要一進屋就東瞧西瞅。」「我會小心的。」小紅帽對媽媽說，並且還和媽媽勾勾手做保證。</h5><br><br><h3>現在，你將扮演小紅帽，做出選擇，掌握自己的命運吧。</h3>",
+                choices: [
+                    { text: "繼續", nextId: "p3" },
+                ],
+            },
+            {
+                id: "p3",
+                text: "<h5>奶奶住在村子外面的森林裡，離妳的家有很長一段路。妳剛走進森林就碰到了一條岔路，妳看著兩條道路，怎麼也想不起來媽媽曾經叮囑過的話，於是妳只能依靠直覺選擇。</h5><br><br><h3>妳決定：</h3>",
+                choices: [
+                    { text: "選擇看起來較短的路徑", nextId: "choice1_1" },
+                    { text: "選擇看起來較長的路徑", nextId: "choice1_2" },
+                ],
+            },
+            {
+                id: "choice1_1",
+                text: "<h5>這條小徑看起來隱蔽而狹窄，被茂密的樹林所環繞。陽光只能透過樹葉的縫隙灑在小徑上，形成斑駁的光影。妳可以感受到微風輕拂著臉龐，但同時也能聽到附近傳來的神秘聲響，彷彿有什麼生物在草叢中悄悄移動著。<br>妳忍著害怕往前走，不久後遇到了一隻野狼，牠朝著妳走來。</h5><br><br><h3>妳決定：</h3>",
+                choices: [
+                    { text: "看他要幹嘛", nextId: "choice1_1_1" },
+                    { text: "好可怕，快跑", nextId: "choice1_1_2" },
+                ],
+            },
+            {
+                id: "choice1_1_1",
+                text: "<h5>妳不知道狼是壞傢伙，所以一點也不怕它。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "d" },
+                ],
+            },
+            {
+                id: "choice1_1_2",
+                text: "<h5>妳決定往回走，回到另一條較長的路徑。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "choice1_2" },
+                ],
+            },
+            {
+                id: "choice1_2",
+                text: "<h5>這條小徑相對寬闊，通向一片開闊的草原，妳可以看到遠處的山丘和藍天白雲。沿著小徑行走，沿路都是五彩斑斕的野花和鮮豔的蝴蝶在草地上飛舞。妳覺得心情愉悅，不自覺放慢了腳步。<br><br>突然，妳看到一位獵人，他告訴妳他正在追捕一隻可怕的狼。<br><br><h3>妳決定：</h3></h5>",
+                choices: [
+                    { text: "幫助獵人", nextId: "choice1_2_1" },
+                    { text: "不要招攬麻煩", nextId: "choice1_2_2" },
+                ],
+            },
+            {
+                id: "choice1_2_2",
+                text: "<h5>妳不想招惹麻煩，心裡又掛念著奶奶，於是禮貌的婉拒了獵人，獵人也能體諒妳，沒有多說甚麼就離開了。<br>於是妳繼續往前進。<br>走了不久，竟然遇到了一隻野狼，妳心裡有些後悔沒跟獵人同行，但也只能硬著頭皮繼續往前走。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "d" },
+                ],
+            },
+            {
+                id: "d",
+                text: "<h5>「你好，小紅帽，」狼說。<br>「你好呀，狼先生。」<br>「小紅帽，這麼早要到哪裡去呀？」<br>「我要到奶奶家去。」<br>「你那圍裙下面有什麼呀？」<br>「蛋糕和葡萄酒。昨天我們家烤了一些蛋糕，可憐的奶奶生了病，要吃一些好東西才能恢復過來。」<br>「你奶奶住在哪裡呀，小紅帽？」<br>「進了林子還有一段路呢。她的房子就在三棵大橡樹下，低處圍著核桃樹籬笆。你一定知道的。」妳說。<br>狼在心中盤算著：「這小東西細皮嫩肉的，味道肯定比那老太婆要好。我要講究一下策略，讓她倆都逃不出我的手心。」</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p4" },
+                ],
+            },
+            {
+                id: "choice1_2_1",
+                text: "<h5>妳發現獵人的路線與奶奶家很近，決定順路幫助他。你們來到奶奶家門前，發現奶奶家的門微微的開著，你們覺得古怪，於是前去查看。一靠近便赫然發現躺在床上呼呼大睡的竟然是野狼。<br>「你這老壞蛋，我找了你這麼久，真沒想到在這裡找到你！」他說。他正準備向狼開槍，突然又想到，這狼很可能把奶奶吞進了肚子，奶奶也許還活著。<br>於是操起一把剪刀，動手把呼呼大睡的狼的肚子剪了開來。剪沒幾下，果然看到了奶奶，她還活著，只是有點喘不過氣來。小紅帽趕緊跑去搬來幾塊大石頭，塞進狼的肚子。<br>狼醒來之後想逃走，可是那些石頭太重了，它剛站起來就跌到在地，摔死了。<br>三個人高興極了。獵人剝下狼皮，回家去了。<br>妳也高高興興地回了家，從此再也沒有誰傷害過妳。</h5>",
+                choices: [
+                    { text: "故事結束啦!謝謝觀看!" ,nextId: "end1"},
+                ],
+            },
+            {
+                id: "p4",
+                text: "<h5>於是它陪著妳走了一會兒，然後說：「小紅帽，你看周圍這些花多麼美麗啊！不回頭看一看嗎？還有這些小鳥，它們唱得多麼動聽啊！你大概根本沒有聽到吧？林子裡的一切多麼美好啊，而你卻只管往前走，就像是去上學一樣。」</h5><br><br><h3>妳選擇：</h3>",
+                choices: [
+                    { text: "雖然鮮花很美，但是快點去探望奶奶更重要", nextId: "choice2_1" },
+                    { text: "鮮花好美，也許該摘一些花給奶奶", nextId: "choice2_2" },
+                ],
+            },
+            {
+                id: "choice2_1",
+                text: "<h5>妳假裝沒聽到野狼說的話，直直地往奶奶家前進，野狼拿妳沒辦法，氣急敗壞的跑掉了。<br>妳走了一段時間，終於到了奶奶家，妳敲了敲門。<br>「是誰呀？」<br>「是小紅帽。」妳說，「我給您送蛋糕和葡萄酒來了，快開門哪。」<br>「你拉一下門栓就行了，」奶奶大聲說，「我身上沒有力氣，起不來。」<br>妳剛拉起門栓，門就開了。<br>妳急急忙忙地走到床前，將奶奶扶著坐起來，並且將妳帶來的東西給奶奶吃。<br>奶奶吃了妳帶來的蛋糕和葡萄酒，精神好多了，病也漸漸好了起來。妳高高興興地回了家，從此再也沒有誰傷害過妳。</h5>", 
+                choices: [
+                    { text: "故事結束啦!謝謝觀看!" ,nextId: "end2"},
+                ],
+            },
+            {
+                id: "choice2_2",
+                text: "<h5>妳抬起頭來，看到陽光在樹木間來回跳蕩，美麗的鮮花在四周開放，便想：「也許我該摘一把鮮花給奶奶，讓她高興高興。現在天色還早，我不會去遲的。」<br>於是妳離開大路，走進林子去摘花。每摘下一朵花，總覺得前面還有更美麗的花朵，便又向前走去，結果一直走到了林子深處。<br>就在此時，狼卻直接跑到奶奶家，敲了敲門。<br>「是誰呀？」<br>「是小紅帽。」狼回答，「我給你送蛋糕和葡萄酒來了，快開門哪。」<br>「你拉一下門栓就行了，」奶奶大聲說，「我身上沒有力氣，起不來。」<br>狼剛拉起門栓，那門就開了。狼二話沒說就衝到奶奶的床前，把奶奶吞進了肚子。然後穿上奶奶的衣服，戴上她的帽子，躺在床上，還拉上了簾子。<br>可這時妳還在跑來跑去地摘花。直到摘了許多許多，妳都拿不了啦，才想起奶奶，重新上路去奶奶家。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p5" },
+                ],
+            },
+            {
+                id: "p5",
+                text: "<h5>看到奶奶家的屋門敞開著，妳感到很奇怪。一走進屋子就有一種異樣的感覺，心中便想：「天哪！平常我那麼喜歡來奶奶家，今天怎麼這樣害怕？」妳大聲叫道：「早上好！」，可是沒有聽到回答。<br>妳走到床前拉開簾子，只見奶奶躺在床上，帽子拉得低低的，把臉都遮住了，樣子非常奇怪。<br>「哎，奶奶，」她說，「你的耳朵怎麼這樣大呀？」<br>「為了更好地聽你說話呀，乖乖。」<br>「可是奶奶，你的眼睛怎麼這樣大呀？」小紅帽又問。<br>「為了更清楚地看你呀，乖乖。」<br>「奶奶，你的手怎麼這樣大呀？」<br>「可以更好地抱著你呀。」<br>「奶奶，你的嘴巴怎麼大得很嚇人呀？」<br>「可以一口把你吃掉呀！」</h5>",
+                choices: [
+                    { text: "繼續", nextId: "c" },
+                ],
+            },
+            {
+                id: "c",
+                text: "<h5>狼剛把話說完，就從床上跳起來，把妳吞進了肚子，狼滿足了食慾之後便重新躺到床上睡覺，而且鼾聲震天。一位獵人碰巧從屋前走過，心想：「這老太太鼾打得好響啊！我要進去看看她是不是出什麼事了。」獵人進了屋，來到床前時卻發現躺在那裡的竟是狼。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p6" },
+                ],
+            },
+            {
+                id: "p6",
+                text: "<h5>「你這老壞蛋，我找了你這麼久，真沒想到在這裡找到你！」他說。他正準備向狼開槍，突然又想到，這狼很可能把奶奶吞進了肚子，奶奶也許還活著。<br>獵人就沒有開槍，而是操起一把剪刀，動手把呼呼大睡的狼的肚子剪了開來。他剛剪了兩下，就看到了紅色的小帽子。<br>他又剪了兩下，妳便跳了出來，叫道：「真把我嚇壞了！狼肚子裡黑漆漆的。」接著，奶奶也活著出來了，只是有點喘不過氣來。妳趕緊跑去搬來幾塊大石頭，塞進狼的肚子。<br>狼醒來之後想逃走，可是那些石頭太重了，它剛站起來就跌到在地，摔死了。<br>三個人高興極了。獵人剝下狼皮，回家去了。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p7" },
+                ],
+            },
+            {
+                id: "p7",
+                text: "<h5>後來又有一次，妳把蛋糕送給奶奶，而且在路上又有一只狼跟妳搭話，想騙妳離開大路。可妳提高了警惕，頭也不回地向前走。妳告訴奶奶說碰到了狼，那傢伙嘴上雖然對妳說「你好」，眼睛裡卻露著兇光，要不是在大路上，它准把妳給吃了。<br>「那麼」奶奶說，「我們把門關緊，不讓它進來。」不一會兒，狼真的一面敲著門一面叫道：「奶奶，快開門呀。我是小紅帽，給你送蛋糕來了。」但是妳們既不說話，也不開門。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p8" },
+                ],
+            },
+            {
+                id: "p8",
+                text: "<h5>這長著灰毛的傢伙圍著房子轉了兩三圈，最後跳上屋頂，打算等妳在傍晚回家時偷偷跟在妳的後面，趁天黑把妳吃掉。<br>可奶奶看穿了這傢伙的壞心思。她想起屋子前有一個大石頭槽子，便對妳說：「小紅帽，把桶拿來。我昨天做了一些香腸，提些煮香腸的水去倒進石頭槽裡。」<br>妳提了很多很多水，把那個大石頭槽子裝得滿滿的。香腸的氣味飄進了狼的鼻孔，它使勁地用鼻子聞呀聞，並且朝下張望著，到最後把脖子伸得太長了，身子開始往下滑。它從屋頂上滑了下來，正好落在大石槽中，淹死了。<br>妳高高興興地回了家，從此再也沒有誰傷害過妳。</h5>",
+                choices: [
+                    { text: "故事結束啦!謝謝觀看!" , nextId:"end3"},
+                ],
+            },
+            {
+                id: "end1",
+                text: "<h3 style='text-align:center;'>恭喜收集故事一結局</h3>",
+            },
+            {
+                id: "end2",
+                text: "<h3 style='text-align:center;'>恭喜收集故事二結局</h3>",
+            },
+            {
+                id: "end3",
+                text: "<h3 style='text-align:center;'>恭喜收集故事三結局</h3>",
+            },
+        ];
+
+        let currentStoryIndex = 0; // 目前劇情索引
+
+        function continueStory() {
+            var storyContainer = document.getElementById("storyContainer");
+            var storyText = document.getElementById("storyText");
+            var choicesContainer = document.getElementById("choicesContainer");
+            var continueButton = document.getElementById("continueButton");
+
+            // 隱藏選項容器
+            choicesContainer.style.display = "none";
+
+            // 檢查是否有達到故事結尾
+            // if (currentStoryIndex > storyData.length) {
+            //     storyText.innerHTML = "<h3>故事結束啦!感謝觀看!</h3>";
+            //     continueButton.style.display = "none"; // 隱藏繼續按鈕
+            //     return;
+            // }
+
+            // 取得目前劇情資料
+            var currentStoryData = storyData[currentStoryIndex];
+            storyText.innerHTML = currentStoryData.text;
+
+            // 檢查是否有選項
+            if (currentStoryData.choices.length > 0) {
+                choicesContainer.innerHTML = ""; // 清空選項容器
+
+                // 顯示選項
+                currentStoryData.choices.forEach(function (choice, index) {
+                    var choiceButton = document.createElement("button");
+                    choiceButton.innerHTML = choice.text;
+                    choiceButton.onclick = function () {
+                        makeChoice(index);
+                    };
+                    choicesContainer.appendChild(choiceButton);
+                });
+
+                choicesContainer.style.display = "block"; // 顯示選項容器
+                continueButton.style.display = "none"; // 隱藏繼續按鈕
+            } else {
+                continueButton.style.display = "block"; // 顯示繼續按鈕
+            }
+        }
+
+        function makeChoice(choiceIndex) {
+            var currentStoryData = storyData[currentStoryIndex];
+            var choice = currentStoryData.choices[choiceIndex];
+
+            var text = String(choice.nextId);
+            if (text == 'end1') {
+                console.log('結局一');
+                continueStory();
+                addEndCollect('小紅帽,結局一');
+
+            } else if (text == 'end2') {
+                console.log('結局二');
+                continueStory();
+                addEndCollect('小紅帽,結局二');
+
+            } else if (text == 'end3') {
+                console.log('結局三');
+                continueStory();
+                addEndCollect('小紅帽,結局三');
+
+            }
+
+            // 根據選項的 nextId 更新目前劇情索引
+            currentStoryIndex = storyData.findIndex(function (data) {
+                return data.id === choice.nextId;
+            });
+
+            continueStory(); // 繼續劇情
+
+
+        }
+
+        continueStory(); // 開始劇情
+
+        function addEndCollect(text) {
+            let id = document.cookie.split('=')[0];
+            axios
+                .post("http://127.0.0.1:3000/endcollect", {
+                    帳號: id,
+                    結局收集: text
+                })
+            axios
+                .post("http://127.0.0.1:3000/count", {
+                    帳號: id,
+                    次數: 1
+                })
+        }
+    </script>
+</body>
+
+
+</html>

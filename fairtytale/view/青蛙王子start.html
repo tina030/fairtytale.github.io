@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+        crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous">
+        </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
+    <link href="/public/style.css" rel="stylesheet" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js"></script>
+    <title></title>
+</head>
+
+<body style="background-image: url('/public/images/Fairy\ Tale\ Mood.jfif');  background-size: cover;">
+
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #2a1e2e;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="首頁.html">
+                <img src="/public/images/logo1.png" style="height: 30pt;">
+            </a>
+            <div class="d-flex">
+                <div class="collapse navbar-collapse me-2" id="navbarNavDarkDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                故事選擇
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" href="白雪公主主頁.html">白雪公主</a></li>
+                                <li><a class="dropdown-item" href="灰姑娘主頁.html">灰姑娘</a></li>
+                                <li><a class="dropdown-item" href="小紅帽主頁.html">小紅帽</a></li>
+                                <li><a class="dropdown-item" href="青蛙王子主頁.html">青蛙王子</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <a class="navbar-brand" href="player.html">
+                    <img src="/public/images/user.png" style="height: 30pt;">
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="storyContainer">
+        <div id="storyText"></div>
+        <div id="choicesContainer"></div>
+        <button id="continueButton" onclick="continueStory()">繼續</button>
+
+    </div>
+
+    <script>
+        // 故事劇情資料
+        var storyData = [
+            {
+                id: "p1",
+                text: "<h3>前情提要:</h3><h5>在遙遠的古代，人們心中的美好願望往往能夠變成現實。就在那個令人神往的時代，曾經有過一位國王。國王有好幾個女兒，個個都長得非常美麗。<br>尤其是他的小女兒，更是美如天仙，就連見多識廣的太陽，每次照在她臉上時，都對她的美麗感到驚詫不已。<br>國王的宮殿附近，有一片幽暗的大森林。在這片森林中的一棵老椴樹下，有一個水潭，水潭很深。在天熱的時候，小公主常常來到這片森林，坐在清涼的水潭邊上。<br>她坐在那裡感到無聊的時候，就取出一隻金球，把金球拋向空中，然後再用手接住。這成了她最喜愛的遊戲。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p2" },
+                ],
+            },
+            {
+                id: "p2",
+                text: "<h5>不巧的是，有一次，小公主伸出兩隻小手去接金球，金球卻沒有落進她的手裡，而是掉到了地上，而且一下子就滾到了水潭裡。小公主兩眼緊緊地盯著金球，可是金球忽地一下子在水潭裡就沒影兒了。<br>因為水潭裡的水很深，看不見底，小公主就哭了起來，她的哭聲越來越大，哭得傷心極了。哭著哭著，小公主突然聽見有人大聲說：「哎呀，公主，您這是怎麼啦？您這樣嚎啕大哭，就連石頭聽了都會心疼的呀。」<br>聽了這話，小公主四處張望，想弄清楚說話聲是從哪兒傳來的，不料卻發現一隻青蛙，從水裡伸出他那醜陋不堪的肥嘟嘟大腦袋。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p3" },
+                ],
+            },
+            {
+                id: "p3",
+                text: "<h5>「啊！原來是你呀，游泳健將。」小公主對青蛙說道「我在這兒哭，是因為我的金球掉進水潭裡去了。」<br>「好啦，不要難過，別哭了。」青蛙回答說「我有辦法幫助您。要是我幫您把您的金球撈出來，您拿什麼東西來回報我呢？」<br>「親愛的青蛙，你要什麼東西都成。」小公主回答說「我的衣服、我的珍珠和寶石、甚至我頭上戴著的這頂金冠，都可以給你。」<br>聽了這話，青蛙對小公主說：「您的衣服、您的珍珠、您的寶石，還有您的金冠，我哪樣都不想要。不過，要是您喜歡我，讓我做您的好朋友，我們一起遊戲，吃飯的時候讓我和您同坐一張餐桌，用您的小金碟子吃東西，用您的小高腳杯飲酒，晚上還讓我睡在您的小床上。要是您答應所有這一切的話，我就潛到水潭裡去，把您的金球撈出來。」</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p4" },
+                ],
+            },
+            {
+                id: "p4",
+                text: "<h5>「好的，太好了。」小公主說，「只要你願意把我的金球撈出來，你的一切要求我都答應。」<br>小公主雖然嘴上這麼說，心裡卻想：「這只青蛙可真夠傻的，盡胡說八道！他只配蹲在水潭裡，和其他青蛙一起呱呱叫，怎麼可能做人的好朋友呢？」</h5><br><br><h3>現在，你將扮演小公主，做出選擇，掌握自己的命運吧。</h3>",
+                choices: [
+                    { text: "繼續", nextId: "p5" },
+                ],
+            },
+            {
+                id: "p5",
+                text: "<h5>青蛙得到了妳的許諾之後，往水裡一跳，就潛入了水潭。<br>過了一會兒，青蛙嘴裡銜著金球，浮出了水面，然後把金球吐在草地上。妳又見到了自己心愛的玩具，心裡別提有多高興了。<br><br><h3>小青蛙依約定完成了任務，妳選擇：</h3></h5>",
+                choices: [
+                    { text: "做人要有誠信，帶小青蛙回家", nextId: "choice1_1" },
+                    { text: "哈哈，金球回來了，約定我才不管", nextId: "choice1_2" },
+                ],
+            },
+            {
+                id: "choice1_1",
+                text: "<h5>妳是一位言而有信的人，雖然對小青蛙有點害怕，但還是按照約定將牠帶回家去。你們每天一起吃飯，一起睡覺，漸漸地，妳和小青蛙變成了要好的朋友。<br>牠告訴妳，其實他被一個狠毒的巫婆施了魔法，除了妳以外，誰也不能把他從水潭裡解救出來。<br>妳靜靜地聽牠說完，很心疼牠，於是對牠承諾，妳會一輩子照顧牠，直到牠恢復原狀為止。說著說著，突然一道明亮的光芒閃耀著，青蛙消失了，取而代之的是一位英俊的王子。<br><br>王子感激地看著妳，牽起妳的手，說要娶妳為妻。妳欣然答應了，也告知了國王。隔天，你們一起回到他的王國，並舉行了盛大的婚禮，從此過著幸福快樂的生活。</h5>",
+                choices: [
+                    { text: "故事結束啦!謝謝觀看!", nextId: "end1" },
+                ],
+            },
+            {
+                id: "choice1_2",
+                text: "<h5>妳把金球撿了起來，撒腿就跑。<br>「別跑！別跑！」青蛙大聲叫道，「帶上我呀！我可跑不了您那麼快。」<br>儘管青蛙扯著嗓子拚命叫喊，可是沒有一點兒用。妳對青蛙的喊叫根本不予理睬，而是徑直跑回了家，並且很快就把可憐的青蛙忘記得一乾二淨。青蛙只好蹦蹦跳跳地又回到水潭裡去。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p6" },
+                ],
+            },
+            {
+                id: "p6",
+                text: "<h5>第二天，妳跟國王和大臣們剛剛坐上餐桌，正要開始用妳的小金碟進餐時，突然聽見啪啦啪啦的聲音。<br>隨著聲響，有個什麼東西順著大理石台階往上跳，到了門口時，便一邊敲門一邊大聲嚷嚷：「小公主，快開門！」<br><br><h3>這時，妳選擇：</h3></h5>",
+                choices: [
+                    { text: "誰啊？去看看", nextId: "choice2_1" },
+                    { text: "天啊！不會是青蛙吧！絕對不開門", nextId: "choice2_2" },
+                ],
+            },
+            {
+                id: "choice2_1",
+                text: "<h5>聽到喊聲，妳急忙跑到門口，想看看是誰在門外喊叫。打開門一看，原來是那只青蛙，正蹲在門前。<br>妳見是青蛙，猛然把門關上，轉身趕緊回到座位，心裡害怕極了。國王發現妳一副心慌意亂的樣子，就問：「孩子，你怎麼會嚇成這個樣子？該不是門外有個巨人要把你抓走吧？」<br>「啊，不是的。」妳回答說，「不是什麼巨人，而是一隻討厭的青蛙。」<br>「青蛙想找你做什麼呢？」<br>「唉！我的好爸爸，昨天我到森林裡去了。坐在水潭邊上玩的時候，金球掉到水潭裡去，我哭得很傷心，青蛙就替我把金球撈了上來。因為青蛙請求我做他的朋友，我答應了，可是我壓根兒沒有想到，他會從水潭裡爬出來，爬這麼遠的路到這兒來。現在他就在門外呢，想要上這兒來。」</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p7" },
+                ],
+            },
+            {
+                id: "p7",
+                text: "<h5>正說著話的時候，又聽見了敲門聲，接著是大聲的喊叫：<br>「小公主啊我的愛，快點兒把門打開！愛你的人已到來，快點兒把門打開！你不會忘記昨天，老椴樹下水潭邊，潭水深深球不見，是你親口許諾言。」<br>國王聽了之後對妳說，「你不能言而無信，快去開門讓他進來。」<br>妳走過去把門打開，青蛙蹦蹦跳跳地進了門，然後跟著妳來到座位前，接著大聲叫道，「把我抱到你身旁呀！」<br>妳聽了嚇得發抖，國王卻吩咐妳照青蛙說的去做。青蛙被放在了椅子上，可心裡不太高興，想到桌子上去。<br>上了桌子之後又說「把您的小金碟子推過來一點兒好嗎？這樣我們就可以一塊兒吃啦。」<br>很顯然，妳很不情願這麼做，可妳還是把金碟子推了過去。青蛙吃得津津有味，可妳卻一點兒胃口都沒有。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p8" },
+                ],
+            },
+            {
+                id: "p8",
+                text: "<h5>終於，青蛙開口說，「我已經吃飽了。現在我有點累了，請把我抱到您的小臥室去，舖好您的緞子被蓋，然後我們就寢吧。」<br>妳害怕這只冷冰冰的青蛙，連碰都不敢碰一下。一聽他要在自己整潔漂亮的小床上睡覺，就哭了起來。<br>國王見妳這個樣子，就生氣地對妳說「在我們困難的時候幫助過我們的人，不論他是誰，都不應當受到鄙視。」<br>於是，妳用兩隻纖秀的手指把青蛙挾起來，帶著他上了樓，把他放在臥室的一個角落裡。可是妳剛剛在床上躺下，青蛙就爬到床邊對妳說「我累了，我也想在床上睡覺。請把我抱上來，要不然我就告訴您父親。」</h5>",
+                choices: [
+                    { text: "繼續", nextId: "a" },
+                ],
+            },
+            {
+                id: "choice2_2",
+                text: "<h5>妳討厭那隻醜陋的青蛙，決定不管發生什麼事，絕對不去開門。<br>青蛙在外面大聲叫喊，妳就用更大的音量與國王聊天，國王雖然覺得奇怪，但也成功被妳蒙混過去。<br>晚上，到了妳該就寢的時間，妳聽到窗外一直有悉悉簌簌的聲音，妳有點害怕，朝著窗戶邊靠近。突然，一顆小石頭彈到妳的窗上，妳嚇了一大跳，拉開窗戶一看，便看到了那隻青蛙。<br>妳急忙將窗戶關上，可是青蛙動作比妳更快，已經跳進了妳的房間。<br>你們一人一蛙無言對視著，妳忍無可忍的打破沉默，大喊：「滾出我的房間！」</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p9" },
+                ],
+            },
+            {
+                id: "p9",
+                text: "<h5>小青蛙倒是神色輕鬆，牠緩緩地開口：「小公主不能言而無信呀！我幫助妳找回了金球，妳就要和我當好朋友。」<br>妳堅決反對，但又不敢碰這隻青蛙。小青蛙見妳對牠沒轍，慢慢地跳到了妳的床邊，見牠嘗試各種方法想要上去床上，妳忍不住了，把牠放到房間角落裡，妳說：「我只能接受這樣。」<br>小青蛙不服氣地說：「我累了，我也想在床上睡覺。請把我抱上來，要不然我就告訴您父親。」</h5>",
+                choices: [
+                    { text: "繼續", nextId: "a" },
+                ],
+            },
+            {
+                id: "a",
+                text: "<h5>一聽這話，妳勃然大怒，一把抓起青蛙，朝牆上死勁兒摔去。<br>「現在你想睡就去睡吧，你這個醜陋的討厭鬼！」<br><br>誰知他一落地，已不再是什麼青蛙，而是變成了一位兩眼炯炯有神、滿面笑容的王子。直到這時候，王子才告訴妳，原來他被一個狠毒的巫婆施了魔法，除了妳以外，誰也不能把他從水潭裡解救出來。<br>於是，遵照國王的旨意，他成為妳親密的朋友和伴侶。隔天，你們將一道返回他的王國。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "b" },
+                ],
+            },
+            {
+                id: "b",
+                text: "<h5>第二天早上，太陽爬上山的時候，一輛八匹馬拉的大馬車已停在了門前，馬頭上都插著潔白的羽毛，一晃一晃的，馬身上套著金光閃閃的馬具。<br>車後邊站著王子的僕人—忠心耿耿的亨利。亨利的主人被變成一隻青蛙之後，他悲痛欲絕，於是他在自己的胸口套上了三個鐵箍，免得他的心因為悲傷而破碎了。<br>馬車來接年輕的王子回他的王國去。忠心耿耿的亨利扶著他的主人和王妃上了車廂，然後自己又站到了車後邊去。<br>他們上路後剛走了不遠，突然聽見辟辟啦啦的響聲，好像有什麼東西斷裂了。路上，辟辟啦啦聲響了一次又一次，每次王子和妳聽見響聲，都以為是車上的什麼東西壞了。<br>其實不然，忠心耿耿的亨利見主人是那麼地幸福，因而感到欣喜若狂，於是那幾個鐵箍就從他的胸口上一個接一個地崩掉了。</h5>",
+                choices: [
+                    { text: "故事結束啦!謝謝觀看!", nextId: "end2" },
+                ],
+            },
+            {
+                id: "end1",
+                text: "<h3 style='text-align:center;'>恭喜收集故事一結局</h3>",
+            },
+            {
+                id: "end2",
+                text: "<h3 style='text-align:center;'>恭喜收集故事二結局</h3>",
+            },
+            
+        ];
+
+        let currentStoryIndex = 0; // 目前劇情索引
+
+        function continueStory() {
+            var storyContainer = document.getElementById("storyContainer");
+            var storyText = document.getElementById("storyText");
+            var choicesContainer = document.getElementById("choicesContainer");
+            var continueButton = document.getElementById("continueButton");
+
+            // 隱藏選項容器
+            choicesContainer.style.display = "none";
+
+            // 檢查是否有達到故事結尾
+            // if (currentStoryIndex > storyData.length) {
+            //     storyText.innerHTML = "<h3>故事結束啦!感謝觀看!</h3>";
+            //     continueButton.style.display = "none"; // 隱藏繼續按鈕
+            //     return;
+            // }
+
+            // 取得目前劇情資料
+            var currentStoryData = storyData[currentStoryIndex];
+            storyText.innerHTML = currentStoryData.text;
+
+            // 檢查是否有選項
+            if (currentStoryData.choices.length > 0) {
+                choicesContainer.innerHTML = ""; // 清空選項容器
+
+                // 顯示選項
+                currentStoryData.choices.forEach(function (choice, index) {
+                    var choiceButton = document.createElement("button");
+                    choiceButton.innerHTML = choice.text;
+                    choiceButton.onclick = function () {
+                        makeChoice(index);
+                    };
+                    choicesContainer.appendChild(choiceButton);
+                });
+
+                choicesContainer.style.display = "block"; // 顯示選項容器
+                continueButton.style.display = "none"; // 隱藏繼續按鈕
+            } else {
+                continueButton.style.display = "block"; // 顯示繼續按鈕
+            }
+        }
+
+        function makeChoice(choiceIndex) {
+            var currentStoryData = storyData[currentStoryIndex];
+            var choice = currentStoryData.choices[choiceIndex];
+
+            var text = String(choice.nextId);
+            if (text == 'end1') {
+                console.log('結局一');
+                continueStory();
+                addEndCollect('青蛙王子,結局一');
+
+            } else if (text == 'end2') {
+                console.log('結局二');
+                continueStory();
+                addEndCollect('青蛙王子,結局二');
+
+            }
+
+            // 根據選項的 nextId 更新目前劇情索引
+            currentStoryIndex = storyData.findIndex(function (data) {
+                return data.id === choice.nextId;
+            });
+
+            continueStory(); // 繼續劇情
+
+
+        }
+
+        continueStory(); // 開始劇情
+
+        function addEndCollect(text) {
+            let id = document.cookie.split('=')[0];
+            axios
+                .post("http://127.0.0.1:3000/endcollect", {
+                    帳號: id,
+                    結局收集: text
+                })
+            axios
+                .post("http://127.0.0.1:3000/count", {
+                    帳號: id,
+                    次數: 1
+                })
+        }
+    </script>
+</body>
+
+
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+        crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous">
+        </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
+    <link href="/public/style.css" rel="stylesheet" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js"></script>
+    <title></title>
+</head>
+
+<body style="background-image: url('/public/images/ATOMIC.jfif');  background-size: cover;">
+
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #2a1e2e;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="首頁.html">
+                <img src="/public/images/logo1.png" style="height: 30pt;">
+            </a>
+            <div class="d-flex">
+                <div class="collapse navbar-collapse me-2" id="navbarNavDarkDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                故事選擇
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" href="白雪公主主頁.html">白雪公主</a></li>
+                                <li><a class="dropdown-item" href="灰姑娘主頁.html">灰姑娘</a></li>
+                                <li><a class="dropdown-item" href="小紅帽主頁.html">小紅帽</a></li>
+                                <li><a class="dropdown-item" href="青蛙王子主頁.html">青蛙王子</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <a class="navbar-brand" href="player.html">
+                    <img src="/public/images/user.png" style="height: 30pt;">
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="storyContainer">
+        <div id="storyText"></div>
+        <div id="choicesContainer"></div>
+        <button id="continueButton" onclick="continueStory()">繼續</button>
+
+    </div>
+
+    <script>
+        // 故事劇情資料
+        var storyData = [
+            {
+                id: "p1",
+                text: "<h3>前情提要:</h3><h5>從前，有一個富人的妻子得了重病，在臨終前，她把自己的獨生女兒叫到身邊說：「乖女兒，媽去了以後會在九泉之下守護你、保佑你的。」說完她就閉上眼睛死了。<br>她被葬在了花園裡，小姑娘是一個虔誠而又善良的女孩，她每天都到她母親的墳前去哭泣。冬天來了，大雪為她母親的墳蓋上了白色的毛毯。春風吹來，太陽又卸去了墳上的銀裝素裹。冬去春來，人過境遷，他爸爸又娶了另外一個妻子。<br>新妻子帶著她以前生的兩個女兒一起來了。她們外表很美麗，但是內心卻非常醜陋邪惡。她們到來之時，也就是這個可憐的小姑娘身受苦難之始。<br></h5>",
+                choices: [
+                    { text: "繼續", nextId: "p2" },
+                ],
+            },
+            {
+                id: "p2",
+                text: "<h5>她們說：「要這樣一個沒用的飯桶在廳堂裡幹什麼？誰想吃上麵包，誰就得自己去掙得，滾到廚房裡做廚房女傭去吧！」說完又脫去她漂亮的衣裳，給她換上灰色的舊外套，惡作劇似地嘲笑她，把她趕到廚房裡去了。<br>她被迫去做艱苦的工作。每天天不亮就起來擔水、生火、做飯、洗衣，而且還要忍受她們姐妹對她的漠視和折磨。到了晚上，她累得筋疲力盡時，連睡覺的床鋪也沒有，不得不睡在爐灶旁邊的灰燼中，這樣一來她身上都沾滿了灰燼，又髒又難看，於是她們就叫她灰姑娘。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p3" },
+                ],
+            },
+            {
+                id: "p3",
+                text: "<h5>有一次，父親要到集市去，他問妻子的兩個女兒，要給她們帶什麼回來。第一個說：「我要漂亮的衣裳。」第二個叫道：「我要珍珠和鑽石。」他又對自己的女兒說：「孩子，你想要什麼？」灰姑娘說：「親愛的爸爸，就把你回家路上碰著你帽子的第一根樹枝折給我吧。」<br>父親回來時，他為前兩個女兒帶回了她們想要的漂亮衣服和珍珠鑽石。在路上，他穿過一片濃密的矮樹林時，有一根榛樹枝條碰著了他，幾乎把他的帽子都要掃下來了，所以他把這根樹枝折下來帶上了。<br>回到家裡時，他把樹枝給了他女兒，她拿著樹枝來到母親的墳前，將它栽到了墳邊。<br>她每天都要到墳邊哭三次，每次傷心地哭泣時，淚水就會不斷地滴落在樹枝上，澆灌著它，使樹枝很快長成了一棵漂亮的大樹。<br>不久，有一隻小鳥來樹上築巢，她與小鳥交談起來。後來她想要什麼，小鳥都會給她帶來。</h5><br><br><h3>現在，你將扮演灰姑娘，做出選擇，掌握自己的命運吧。</h3>",
+                choices: [
+                    { text: "繼續", nextId: "p4" },
+                ],
+            },
+            {
+                id: "p4",
+                text: "<h5>國王為了給自己的兒子選擇未婚妻，准備舉辦一個為期三天的盛大宴會，邀請了不少年青漂亮的姑娘來參加。王子打算從這些參加舞會的姑娘中選一個作自己的新娘。妳的兩個姐姐也被邀請去參加。她們把妳叫來說道：「現在來為我們梳好頭髮、擦亮鞋子、系好腰帶，我們要去參加國王舉辦的舞會。」<br><br><h3>妳選擇:</h3></h5>",
+                choices: [
+                    { text: "認命得幫她們打扮", nextId: "choice1_1" },
+                    { text: "老娘不忍了", nextId: "choice1_2" },
+                ],
+            },
+            {
+                id: "choice1_1",
+                text: "<h5>妳按她們的要求給她們收拾打扮完畢後，禁不住哭了起來，因為妳自己也想去參加舞會。妳苦苦哀求繼母讓妳去，可繼母說道：「哎喲！灰姑娘，你也想去？你穿什麼去呀！你連禮服也沒有，甚至連舞也不會跳，你想去參加什麼舞會啊？」<br>妳不停地哀求著，為了擺脫妳的糾纏，繼母最後說道：「我把這一滿盆碗豆倒進灰堆裡去，如果你在兩小時內把它們都揀出來了，你就可以去參加宴會。」<br>說完，她將一盆碗豆倒進灰燼裡，揚長而去。妳沒辦法，只好跑出後門來到花園裡喊道：<br><br>「掠過天空的鴿子和斑鳩，飛來吧！飛到這裡來吧！<br>快樂的鳥雀朋友們，飛來吧！快快飛到這裡來吧！<br>大夥快來幫我忙，快快揀出灰中的碗豆來吧！」</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p5" },
+                ],
+            },
+            {
+                id: "p5",
+                text: "<h5>先飛來的是從廚房窗子進來的兩只白鴿，跟著飛來的是兩只斑鳩，接著天空中所有的小鳥都嘰嘰喳喳地拍動著翅膀，飛到了灰堆上。小白鴿低下頭開始在灰堆裡揀起來，一顆一顆地揀，不停地揀！其它的鳥兒也開始揀，一顆一顆地揀，不停地揀！<br>它們把所有的好豆子都從灰裡揀出來放到了一個盤子裡面，只用一個小時就揀完了。妳向它們道謝後，鳥雀從窗子裡飛走開了。妳懷著興奮的心情，端著盤子去找繼母，以為自己可以去參加舞宴了。但她卻說道：「不行，不行！你這個邋遢女孩，你沒有禮服，不會跳舞，你不能去。」</h5><br><br><h3>妳選擇：</h3>",
+                choices: [
+                    { text: "繼續哀求她", nextId: "choice2_1" },
+                    { text: "管她說什麼，自己偷偷跑去", nextId: "choice2_2" },
+                ],
+            },
+            {
+                id: "choice2_1",
+                text: "<h5>妳又苦苦地哀求她讓妳去。繼母這次說道：「如果你能在一個小時之內把這樣的兩盤碗豆從灰堆裡揀出來，你就可以去了。」她以為這次可以擺脫妳了，說完將兩盤碗豆倒進了灰堆裡，還攪和了一會，然後得意洋洋地走了。但妳又跑到屋後的花園裡和前次一樣地喊道：<br><br>「掠過天空的鴿子和斑鳩，飛來吧！飛到這裡來吧！<br>快樂的鳥雀朋友們，飛來吧！快快飛到這裡來吧！<br>大夥快來幫我忙，快快揀出灰中的碗豆來吧！」</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p6" },
+                ],
+            },
+            {
+                id: "p6",
+                text: "<h5>先飛來的是從廚房窗子進來的兩只白鴿，跟著飛來的是兩只斑鳩，接著天空中所有的小鳥都嘰嘰喳喳地拍動著翅膀，飛到了灰堆上。小白鴿低下頭開始在灰堆裡揀起來，一顆一顆地揀，不停地揀！其它的鳥兒也開始揀，一顆一顆地揀，不停地揀！<br>它們把所有的好豆子都從灰裡揀出來放到了盤子裡面，這次只用半個小時就揀完了。鳥雀們飛去之後，妳端著盤子去找繼母，懷著極其興奮的心情，以為自己可以去參加舞會了。<br>但繼母卻說道：「算了！你別再白費勁了，你是不能去的。你沒有禮服，不會跳舞，你只會給我們丟臉。」說完他們夫妻與她自己的兩個女兒出發參加宴會去了。</h5><br>現在，家裡的人都走了，只留下妳孤伶伶地一個人。<br><br><h3>妳選擇：</h3>",
+                choices: [
+                    { text: "放棄去舞會", nextId: "choice3_1" },
+                    { text: "還是想去舞會", nextId: "choice3_2" },
+                ],
+            },
+            {
+                id: "choice3_1",
+                text: "<h5>剛剛的爭吵已經讓妳精疲力盡，妳覺得身體和心理都好累，想放棄去舞會了。於是妳跑回去爐灶旁睡了一覺，醒來時發現舞會已經結束，爸爸、繼母和兩個姊姊都已經回來了，他們又開始使喚妳幫她們做東做西，於是日復一日，妳始終過著被欺負的日子。</h5>",
+                choices: [
+                    { text: "故事結束啦!謝謝觀看!", nextId: "end3" },
+                ],
+            },
+            {
+                id: "choice3_2",
+                text: "<h5>妳悲傷地坐在榛樹下哭泣：「榛樹啊！請你幫幫我，請你搖一搖，為我抖落金銀禮服一整套。」</h5>",
+                choices: [
+                    { text: "繼續", nextId: "a" },
+                ],
+            },
+            {
+                id: "choice2_2",
+                text: "<h5>妳表面上放棄了去舞會，避免了與繼母爭吵，實際上等他們都出門後，妳跑到榛樹下喊道：「榛樹啊！請你幫幫我，請你搖一搖，為我抖落金銀禮服一整套。」</h5>",
+                choices: [
+                    { text: "繼續", nextId: "a" },
+                ],
+            },
+            {
+                id: "a",
+                text: "<h5>妳的朋友小鳥從樹上飛出來，為妳帶了一套金銀製成的禮服和一雙光亮的絲制舞鞋。收拾打扮，穿上禮服之後，妳在兩個姐妹之後來到了舞廳。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "b" },
+                ],
+            },
+            {
+                id: "choice1_2",
+                text: "<h5>妳已經過膩了這種忍氣吞聲的生活，於是對著他們大喊：「妳們有手有腳不會自己用嗎？老娘不忍了！」說完後將手上的他們的禮服腰帶甩在他們身上，大聲地摔門離去。他們從沒見過妳發脾氣的樣子，被驚呆了，於是一時間沒有追出去。<br>妳跑到後花園的臻樹下，憤怒與傷心的情緒交織著，妳忍不住地流淚，鳥兒見到了，停在妳的肩上，輕輕地蹭了蹭妳的臉蛋，又飛向了天空。<br>妳以為連小鳥也離開了，於是繼續傷心著，但過了一會兒，鳥兒帶著一套非常漂亮的禮服和舞鞋回來了，妳又驚又喜，詢問道：「這是…要讓我參加舞會的禮服嗎？」<br>鳥兒像是聽得懂妳的話一般點了點頭，妳向牠們道謝，開心的打扮過後，朝著舞會前去。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "b" },
+                ],
+            },
+            {
+                id: "b",
+                text: "<h5>穿上豪華的禮服之後，妳看起來是如此高雅、漂亮，美麗動人極了。她們都認不出妳，以為妳一定是一位陌生的公主，根本就沒有想到妳就是灰姑娘，她們以為灰姑娘仍老老實實地待在家中的灰堆裡呢。<br>王子看到妳，很快向妳走來，伸出手挽著妳，請妳跳舞。他再也不和其他姑娘跳舞了，他的手始終不肯放開妳。每當有人來請妳跳舞時，王子總是說：「這位女士在與我跳舞。」<br>你們一起跳到很晚，妳才想起要回家去了。王子想知道這位美麗的姑娘到底住在哪裡，所以說道：「我送妳回家去吧。」<br></h5>",
+                choices: [
+                    { text: "繼續", nextId: "p7" },
+                ],
+            },
+            {
+                id: "p7",
+                text: "<h5>妳表面上同意了，但卻趁他不注意時，悄悄地溜走，拔腿向家裡跑去。王子在後面緊追不捨，妳只好跳進鴿子房並把門關上。王子等在外面不肯離去，一直到妳父親回家時，王子才上前告訴他，說那位他在舞會上遇到的不知道姓名的姑娘藏進了這間鴿子房。當他們砸開鴿子房門時，裡面卻已空無一人，他只好失望地回宮去了。<br>父母進屋子時，妳已經身穿邋遢的衣服躺在灰堆邊上了，就像她一直躺在那兒似地，昏暗的小油燈在煙囪柱上的牆洞裡搖晃著。<br>實際上，妳剛才很快地穿過鴿子房來到榛樹前脫下了漂亮的禮服，將它們放回樹上，讓小鳥把它們帶走，自己則回到屋裡坐到了灰堆上，穿上了那灰色的外套。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p8" },
+                ],
+            },
+            {
+                id: "p8",
+                text: "<h5>第二天，當舞會又要開始時，妳的爸爸，繼母和兩個姐妹都去了。妳來到樹下說：「榛樹啊！請你幫幫我，請你搖一搖，為我抖落金銀禮服一整套。」<br>那只小鳥來了，它帶來了一套比前一天更加漂亮的禮服。當妳來到舞會大廳時，妳的美麗使所有的人驚訝不已。一直在等待妳的到來的王子立即上前挽著妳的手，請她跳起舞來。每當有人要請妳跳舞時，他總是和前一天一樣說：「這位女士在與我跳舞。」<br>到了半夜妳要回家去的時候，王子也和前一天一樣跟著妳，以為這樣可以看到妳進了哪一幢房子。<br>但妳還是甩掉了他，並立即跳進了父親房子後面的花園裡。花園裡有一棵很漂亮的大梨樹，樹上結滿了成熟的梨。灰姑娘不知道自己該藏在什麼地方，只好爬到了樹上。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p9" },
+                ],
+            },
+            {
+                id: "p9",
+                text: "<h5>王子沒有看到妳，他不知道妳去了哪兒，只好又一直等到妳的父親回來，才走上前對他說：「那個與我跳舞的不知姓名的姑娘溜走了，我認為她肯定是跳上梨樹去了。」父親暗想：「難道是灰姑娘嗎？」<br>於是，他要人去拿來一柄斧子，把樹砍倒了一看，樹上根本沒有人。當父親和繼母到廚房來看時，妳和平時一樣正躺在灰燼裡。<br>原來妳跳上梨樹後，又從樹的另一邊溜下來，脫下漂亮的禮服，讓榛樹上的小鳥帶了回去，然後又穿上了自己的灰色小外套。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p10" },
+                ],
+            },
+            {
+                id: "p10",
+                text: "<h5>第三天，當妳父親，繼母和兩個姐妹走了以後，妳又來到花園裡說道：「榛樹啊！請你幫幫我，請你搖一搖，為我抖落金銀禮服一整套。」<br>她善良的朋友又帶來了一套比前一天更加漂亮的禮服和一雙純金編制的舞鞋。當妳趕到舞會現場時，大家都被妳那無法用語言表達的美給驚呆了。王子只與妳一個人跳舞，每當有其他人請妳跳舞時，他總是說：「這位女士是我的舞伴。」<br>當午夜快要來臨時，妳要回家了，王子又要送妳回去，並暗暗說道：「這次我可不能讓妳跑掉了。」</h5><br><h3>妳決定：</h3>",
+                choices: [
+                    { text: "不能讓王子發現自己的身分", nextId: "choice4_1" },
+                    { text: "鼓起勇氣坦白", nextId: "choice4_2" },
+                ],
+            },
+            {
+                id: "choice4_1",
+                text: "<h5>妳還是設法從他身邊溜走了。由於走得過於匆忙，妳竟把左腳的金舞鞋失落在樓梯上了。<br>王子將舞鞋拾起，第二天來到他的國王父親面前說：「我要娶正好能穿上這只金舞鞋的姑娘作我的妻子。」灰姑娘的兩個姐妹聽到這個消息後非常高興，因為她們都有一雙很漂亮的腳，她們認為自己穿上那只舞鞋是毫無疑問的。<br>姐姐由她媽媽陪著先到房子裡去試穿那只舞鞋，可她的大腳趾卻穿不進去，那只鞋對她來說太小了。<br>於是她媽媽拿給她一把刀說：「沒關係，把大腳趾切掉！只要你當上了王后，還在乎這腳趾頭幹嘛，你想到哪兒去根本就不需要用腳了。」大女兒聽了，覺得有道理，這傻姑娘忍著痛苦切掉了自己的大腳趾，勉強穿在腳上來到王子面前。王子看她穿好了鞋子，就把她當成了新娘，與她並排騎在馬上，把她帶走了。</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p11" },
+                ],
+            },
+            {
+                id: "p11",
+                text: "<h5>但在他們出門回王宮的路上，經過後花園灰姑娘栽的那棵榛樹時，停在樹枝上的一隻小鴿子唱道：<br>「再回去！再回去！快看那只鞋！鞋太小，不是為她做的！<br>王子！王子！再找你的新娘吧，坐在你身邊的不是你的新娘！」<br><br>王子聽見後，下馬盯著她的腳看，發現鮮血正從鞋子裡流出來，他知道自己被欺騙了，馬上掉轉馬頭，把假新娘帶回她的家裡說道：「這不是真新娘，讓另一個妹妹來試試這只鞋子吧。」</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p12" },
+                ],
+            },
+            {
+                id: "p12",
+                text: "<h5>於是妹妹試著把鞋穿在腳上，腳前面進去了，可腳後跟太大了，就是穿不進去。她媽媽讓她削去腳後跟穿進去，然後拉著她來到王子面前。王子看她穿好了鞋子，就把她當做新娘扶上馬，並肩坐在一起離去了。<br>但當他們經過榛樹時，小鴿子仍棲息在樹枝頭上，它唱道：<br>「再回去！再回去！快看那只鞋！鞋太小，不是為她做的！<br>王子！王子！再找你的新娘吧，坐在你身邊的不是你的新娘！」<br><br>王子低頭一看，發現血正從舞鞋裡流出來，連她的白色長襪也浸紅了，他又調轉馬頭，同樣把她送了回去，對她的父親說：「這不是真新娘，你還有女兒嗎？」父親回答說：「沒有了，只有我前妻生的一個叫灰姑娘的小邋遢女兒，她不可能是新娘的。」</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p13" },
+                ],
+            },
+            {
+                id: "p13",
+                text: "<h5>然而，王子一定要他把她帶來試一試。妳先把臉和手洗乾淨，然後走進來很有教養地向王子屈膝行禮。<br>王子把舞鞋拿給妳穿，鞋子穿在妳腳上就像是專門為妳做的一樣。他走上前仔細看清楚妳的臉後，認了出來，馬上興奮的說道：「這才是我真正的新娘。」</h5>",
+                choices: [
+                    { text: "繼續", nextId: "p14" },
+                ],
+            },
+            {
+                id: "p14",
+                text: "<h5>繼母和她的兩個姐妹大吃一驚，當王子把妳扶上馬時，她們氣得臉都發白了，眼睜睜地看著王子把妳帶走了。你們來到榛樹邊時，小白鴿唱道：<br>「回家吧！回家吧！快看那只鞋！王妃！這是為你做的鞋！<br>王子！王子！快帶新娘回家去，坐在你身邊的才是真正的新娘」<br><br>鴿子唱完之後，飛上前來，停在了妳的右肩上，你們一起向王宮走去，從此過著幸福快樂的日子。</h5>",
+                choices: [
+                    { text: "故事結束啦!謝謝觀看!", nextId: "end1" },
+                ],
+            },
+            {
+                id: "choice4_2",
+                text: "<h5>妳猶豫了一下，還是決定向王子坦白，妳向他說明了事情的來龍去脈，包括母親過世，被繼母和他的女兒們欺負，還有妳擁有小鳥朋友，牠們為妳帶來禮服的事情等等。<br>妳原本以為王子會不相信，然而完全相反，他相信了，並且非常心疼妳。於是他向妳承諾會娶妳，並與妳來到妳家中，在繼母和他兩個女兒驚愕與憤怒的目光中向他們告別，從此妳與王子過著幸福快樂的日子。</h5>",
+                choices: [
+                    { text: "故事結束啦!謝謝觀看!", nextId: "end2" },
+                ],
+            },
+            {
+                id: "end1",
+                text: "<h3 style='text-align:center;'>恭喜收集故事一結局</h3>",
+            },
+            {
+                id: "end2",
+                text: "<h3 style='text-align:center;'>恭喜收集故事二結局</h3>",
+            },
+            {
+                id: "end3",
+                text: "<h3 style='text-align:center;'>恭喜收集故事三結局</h3>",
+            },
+        ];
+
+        let currentStoryIndex = 0; // 目前劇情索引
+
+        function continueStory() {
+            var storyContainer = document.getElementById("storyContainer");
+            var storyText = document.getElementById("storyText");
+            var choicesContainer = document.getElementById("choicesContainer");
+            var continueButton = document.getElementById("continueButton");
+
+            // 隱藏選項容器
+            choicesContainer.style.display = "none";
+
+            // 檢查是否有達到故事結尾
+            // if (currentStoryIndex > storyData.length) {
+            //     storyText.innerHTML = "<h3>故事結束啦!感謝觀看!</h3>";
+            //     continueButton.style.display = "none"; // 隱藏繼續按鈕
+            //     return;
+            // }
+
+            // 取得目前劇情資料
+            var currentStoryData = storyData[currentStoryIndex];
+            storyText.innerHTML = currentStoryData.text;
+
+            // 檢查是否有選項
+            if (currentStoryData.choices.length > 0) {
+                choicesContainer.innerHTML = ""; // 清空選項容器
+
+                // 顯示選項
+                currentStoryData.choices.forEach(function (choice, index) {
+                    var choiceButton = document.createElement("button");
+                    choiceButton.innerHTML = choice.text;
+                    choiceButton.onclick = function () {
+                        makeChoice(index);
+                    };
+                    choicesContainer.appendChild(choiceButton);
+                });
+
+                choicesContainer.style.display = "block"; // 顯示選項容器
+                continueButton.style.display = "none"; // 隱藏繼續按鈕
+            } else {
+                continueButton.style.display = "block"; // 顯示繼續按鈕
+            }
+        }
+
+        function makeChoice(choiceIndex) {
+            var currentStoryData = storyData[currentStoryIndex];
+            var choice = currentStoryData.choices[choiceIndex];
+
+            var text = String(choice.nextId);
+            if (text == 'end1') {
+                console.log('結局一');
+                continueStory();
+                addEndCollect('灰姑娘,結局一');
+
+            } else if (text == 'end2') {
+                console.log('結局二');
+                continueStory();
+                addEndCollect('灰姑娘,結局二');
+
+            } else if (text == 'end3') {
+                console.log('結局三');
+                continueStory();
+                addEndCollect('灰姑娘,結局三');
+
+            }
+
+            // 根據選項的 nextId 更新目前劇情索引
+            currentStoryIndex = storyData.findIndex(function (data) {
+                return data.id === choice.nextId;
+            });
+
+            continueStory(); // 繼續劇情
+
+
+        }
+
+        continueStory(); // 開始劇情
+
+        function addEndCollect(text) {
+            let id = document.cookie.split('=')[0];
+            axios
+                .post("http://127.0.0.1:3000/endcollect", {
+                    帳號: id,
+                    結局收集: text
+                })
+            axios
+                .post("http://127.0.0.1:3000/count", {
+                    帳號: id,
+                    次數: 1
+                })
+        }
+    </script>
+</body>
+
+
+</html>
